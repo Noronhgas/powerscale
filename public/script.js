@@ -1,7 +1,7 @@
 const form = document.getElementById("form-personagem");
 const resultadoDiv = document.getElementById("resultado");
 
-form.addEventListener("submit", (event) => {
+form.addEventListener("submit", async (event) => {
   event.preventDefault();
 
   const nome = document.getElementById("nome").value;
@@ -10,13 +10,41 @@ form.addEventListener("submit", (event) => {
   const raca = document.getElementById("raca").value;
 
   resultadoDiv.style.display = "block";
+  resultadoDiv.innerHTML = "Calculando nível do personagem...";
 
-  resultadoDiv.innerHTML = `
-    <strong>Dados recebidos:</strong><br>
-    Nome: ${nome}<br>
-    Nível de poder: ${nivelPoder}<br>
-    Idade: ${idade}<br>
-    Raça: ${raca}<br><br>
-    O cálculo final será feito pelo backend na próxima fase.
-  `;
+  try {
+    const resposta = await fetch("/api/personagem/calcular", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        nome,
+        nivelPoder,
+        idade,
+        raca,
+      }),
+    });
+
+    const dados = await resposta.json();
+
+    if (!dados.sucesso) {
+      resultadoDiv.innerHTML = `<strong>Erro:</strong> ${dados.erro}`;
+      return;
+    }
+
+    resultadoDiv.innerHTML = `
+      <strong>${dados.resultado.nome}</strong><br>
+      Raça: ${dados.resultado.raca}<br>
+      Nível de poder informado: ${dados.resultado.nivelPoder}<br>
+      Idade: ${dados.resultado.idade}<br>
+      Multiplicador da raça: ${dados.resultado.multiplicador}<br>
+      Nível do personagem: ${dados.resultado.nivelPersonagem}<br><br>
+      ${dados.resultado.mensagem}
+    `;
+  } catch (error) {
+    resultadoDiv.innerHTML = `
+      <strong>Erro:</strong> Não foi possível conectar com o backend.
+    `;
+  }
 });
