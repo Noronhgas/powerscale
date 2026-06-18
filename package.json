@@ -3,14 +3,15 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
-"scripts": {
-  "start": "node src/server.js",
-  "dev": "node --watch src/server.js",
-  "test": "jest --coverage",
-  "test:unit": "jest tests/unit --coverage",
-  "test:api": "jest tests/api",
-  "test:e2e": "jest tests/e2e --runInBand"
-},
+  "scripts": {
+    "lint": "eslint .",
+    "start": "node src/server.js",
+    "dev": "node --watch src/server.js",
+    "test": "jest --coverage",
+    "test:unit": "jest tests/unit --coverage",
+    "test:api": "jest tests/api",
+    "test:e2e": "jest tests/e2e --runInBand"
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",
@@ -18,7 +19,8 @@
   "dependencies": {
     "cors": "^2.8.6",
     "express": "^5.2.1",
-    "helmet": "^8.2.0"
+    "helmet": "^8.2.0",
+    "lint": "^1.2.2"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
