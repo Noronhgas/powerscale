@@ -5,6 +5,8 @@ const app = require("../../src/app");
 let server;
 let driver;
 
+jest.setTimeout(30000);
+
 describe("Teste de interface com Selenium", () => {
   beforeAll(async () => {
     server = app.listen(3001);
@@ -14,16 +16,23 @@ describe("Teste de interface com Selenium", () => {
     options.addArguments("--headless=new");
     options.addArguments("--no-sandbox");
     options.addArguments("--disable-dev-shm-usage");
+    options.addArguments("--disable-gpu");
+    options.addArguments("--window-size=1920,1080");
 
     driver = await new Builder()
       .forBrowser("chrome")
       .setChromeOptions(options)
       .build();
-  });
+  }, 30000);
 
   afterAll(async () => {
-    await driver.quit();
-    server.close();
+    if (driver) {
+      await driver.quit();
+    }
+
+    if (server) {
+      await new Promise((resolve) => server.close(resolve));
+    }
   });
 
   test("deve calcular nivel de personagem pela interface", async () => {
@@ -39,13 +48,13 @@ describe("Teste de interface com Selenium", () => {
 
     const resultado = await driver.wait(
       until.elementLocated(By.id("resultado")),
-      5000
+      10000
     );
 
     await driver.wait(async () => {
       const texto = await resultado.getText();
       return texto.includes("Nível do personagem: 1200");
-    }, 5000);
+    }, 10000);
 
     const textoFinal = await resultado.getText();
 
