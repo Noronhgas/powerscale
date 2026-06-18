@@ -7,7 +7,7 @@
     "lint": "eslint .",
     "start": "node src/server.js",
     "dev": "node --watch src/server.js",
-    "test": "jest --coverage",
+    "test": "jest tests/unit tests/api --coverage",
     "test:unit": "jest tests/unit --coverage",
     "test:api": "jest tests/api",
     "test:e2e": "jest tests/e2e --runInBand"
