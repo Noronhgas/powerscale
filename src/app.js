@@ -16,7 +16,7 @@ app.use(express.static(path.join(__dirname, "../public")));
 app.get("/api/health", (req, res) => {
   res.json({
     status: "online",
-    message: "API da PowerScale funcionando",
+    message: "API da PowerScale funcionando e aprovado",
   });
 });
 
