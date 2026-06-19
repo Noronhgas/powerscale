@@ -7,7 +7,7 @@ describe("API PowerScale", () => {
 
     expect(resposta.status).toBe(200);
     expect(resposta.body.status).toBe("online");
-    expect(resposta.body.message).toBe("API da PowerScale funcionando");
+    expect(resposta.body.message).toBe("API da PowerScale funcionando e aprovado");
   });
 
   test("POST /api/personagem/calcular deve calcular personagem corretamente", async () => {
