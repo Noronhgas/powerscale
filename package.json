@@ -4,10 +4,30 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "lint": "eslint .",
+    "start": "node src/server.js",
+    "dev": "node --watch src/server.js",
+    "test": "jest tests/unit tests/api --coverage",
+    "test:unit": "jest tests/unit --coverage",
+    "test:api": "jest tests/api",
+    "test:e2e": "jest tests/e2e --runInBand"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "type": "commonjs"
+  "type": "commonjs",
+  "dependencies": {
+    "cors": "^2.8.6",
+    "express": "^5.2.1",
+    "helmet": "^8.2.0",
+    "lint": "^1.2.2"
+  },
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "eslint": "^10.5.0",
+    "globals": "^17.6.0",
+    "jest": "^30.4.2",
+    "selenium-webdriver": "^4.45.0",
+    "supertest": "^7.2.2"
+  }
 }

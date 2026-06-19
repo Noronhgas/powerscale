@@ -1,0 +1,41 @@
+name: Deploy EC2 PowerScale
+
+on:
+  workflow_run:
+    workflows: ["CI-CD PowerScale"]
+    types:
+      - completed
+    branches:
+      - develop
+
+jobs:
+  deploy:
+    name: Deploy na EC2
+    runs-on: ubuntu-latest
+
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+
+    steps:
+      - name: Fazer deploy via SSH
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USER }}
+          key: ${{ secrets.EC2_SSH_KEY }}
+          script: |
+            cd /home/ubuntu/powerscale
+
+            git checkout develop
+            git pull origin develop
+
+            docker build -t powerscale .
+
+            docker rm -f powerscale || true
+
+            docker run -d \
+              --name powerscale \
+              --restart unless-stopped \
+              -p 80:3000 \
+              powerscale
+
+            docker ps
